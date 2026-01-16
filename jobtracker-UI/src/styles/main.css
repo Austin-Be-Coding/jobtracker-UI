@@ -1,0 +1,89 @@
+/* Main shared styles and color variables for the app */
+:root{
+  --gold-1: #ffb020;
+  --gold-2: #ff7a00;
+  --brown-1: #7a4300;
+  --cta-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+/* Primary call-to-action button */
+.cta-button{
+  padding: 10px 16px;
+  background: linear-gradient(90deg,var(--gold-1),var(--gold-2));
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--cta-shadow);
+  font-weight: 700;
+}
+
+/* .cta-button:active{ transform: translateY(1px); } */
+
+/* Secondary link-styled CTA */
+.cta-link{
+  padding: 10px 16px;
+  margin-left: 8px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--gold-2);
+  border: 1px solid rgba(255,122,0,0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+/* Helper for gradient text headings */
+.gradient-heading{
+  background: #FFB020;
+  background: linear-gradient(to right, #FFB020 0%, #FF7A00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* text-shadow: 3px 3px 0 var(--brown-1);
+} */
+}
+
+/* CreateUser / prompt styles */
+.prompt{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-upload{
+  width: 120px;
+  height: 120px;
+  border-radius: 9999px;
+  background-color: #eee;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.12);
+}
+
+.error{ color: red; }
+
+.form-container{ width: 100%; display: grid; gap: 8px; margin-top: 0; }
+
+.form-grid{ display: flex; gap: 8px; }
+
+.input-field{
+  padding: 8px 10px;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 6px;
+  outline: none;
+}
+
+.input-field:focus{ box-shadow: 0 0 0 3px rgba(255,184,64,0.12); border-color: var(--gold-2); }
+
+.form-actions{ display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+
+.btn{ padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.06); background: #fff; cursor: pointer; }
+.btn-secondary{ background: transparent; color: #333; }
+
+/* reuse existing .cta-button for save primary action */
