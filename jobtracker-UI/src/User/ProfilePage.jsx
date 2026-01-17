@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import '../styles/main.css'
+import ResumePage from './ResumePage'
 
 export default function ProfilePage({ user } = {}) {
   const [tab, setTab] = useState('resume')
@@ -43,13 +44,10 @@ export default function ProfilePage({ user } = {}) {
         </div>
       </header>
 
-      <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: '100%', maxWidth: 980 }}>
+      <main style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+        <div style={{ width: '100%', maxWidth: 980, height: '100%' }}>
           {tab === 'resume' && (
-            <section>
-              <h2 className="gradient-heading">Your Resume</h2>
-              <p style={{ color: '#444' }}>Upload or edit your resume here.</p>
-            </section>
+            <ResumePage user={user} />
           )}
           {tab === 'dream' && (
             <section>

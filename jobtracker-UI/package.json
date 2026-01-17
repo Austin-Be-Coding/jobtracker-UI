@@ -12,6 +12,9 @@
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
+    ,"marked": "^5.1.1",
+    "dompurify": "^3.0.6"
+    ,"react-markdown": "^8.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
