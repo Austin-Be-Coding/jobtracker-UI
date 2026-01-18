@@ -119,9 +119,12 @@ export async function login(credentials) {
 
 export async function getCurrentUser() {
   // fetch the user associated with current session/cookie
-  const res = await fetch(`${API_BASE}/user`, buildOptions('GET', null, { credentials: 'include' }))
+  const res = await fetch(`${API_BASE}/auth/me`, buildOptions('GET', null, { credentials: 'include' }))
   if (!res.ok) throw new Error('Failed to fetch current user')
-  return handleResponse(res)
+  const data = await handleResponse(res)
+  // Backend may return { user: { ... }, status: 'authenticated' } — unwrap for callers
+  if (data && typeof data === 'object' && data.user) return data.user
+  return data
 }
 
 export async function logout() {
@@ -136,6 +139,7 @@ export default {
   setApiBase,
   setAuthToken,
   clearAuthToken,
+  getCurrentUser,
   getUsers,
   getUser,
   createUser,

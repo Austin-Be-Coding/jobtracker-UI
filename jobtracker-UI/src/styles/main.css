@@ -4,6 +4,8 @@
   --gold-2: #ff7a00;
   --brown-1: #7a4300;
   --cta-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  display: flex;
+  width: 100%
 }
 
 /* Primary call-to-action button */
@@ -148,3 +150,21 @@
 .suggestion-card--large .suggestion-content strong{
   color: #ffffff;
 }
+
+/* Profile info styles */
+.profile-section{ padding: 12px; text-align: left; margin-top: 20px; }
+.profile-header{ display:flex; gap:24px; align-items:flex-start; margin-bottom:12px }
+.avatar-large{ width:96px; height:96px; border-radius:12px; background-size:cover; background-position:center; border:1px solid rgba(0,0,0,0.06); display:flex; align-items:flex-start; justify-content:flex-start }
+.profile-name{ font-size:34px; font-weight:700 }
+.profile-sub{ color:#ffffff }
+
+.profile-info{ display: grid; gap: 24px }
+.profile-info-row{ display:flex; gap:24px; align-items:flex-start }
+.profile-info-label{font-size:24px; min-width:140px; color:#999999; font-weight:600 }
+.profile-info-value{font-size:24px; color:#f3f3f3 }
+
+.profile-edit-button{ padding:8px 12px; border-radius:8px; background:var(--gold-1); background: linear-gradient(90deg,var(--gold-1),var(--gold-2)); color:#fff; border:none; cursor:pointer }
+
+.profile-form{ display:grid; gap:12px; max-width:720px }
+.profile-form .input-field, .profile-form input{ padding:8px 10px; border:1px solid rgba(0,0,0,0.12); border-radius:6px }
+.profile-actions{ display:flex; gap:8px }

@@ -4,6 +4,7 @@ import HomePage from './HomePage/HomePage.jsx'
 import CreateUser from './User/CreateUser'
 import Signin from './User/Signin'
 import ProfilePage from './User/ProfilePage'
+import userService from './User/userService'
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -14,16 +15,13 @@ function App() {
     let cancelled = false
     async function fetchCurrentUser() {
       try {
-        const res = await fetch('/api/user', { credentials: 'include' })
-        if (!cancelled) {
-          if (res.ok) {
-            const data = await res.json()
-            setUser(data)
-          } else {
-            setUser(null)
-          }
-        }
+       
+        console.log('[App] calling userService.getCurrentUser()')
+        const data = await userService.getCurrentUser()
+        console.log('[App] getCurrentUser ->', data)
+        if (!cancelled) setUser(data || null)
       } catch (e) {
+        console.log('[App] getCurrentUser error', e)
         if (!cancelled) setUser(null)
       } finally {
         if (!cancelled) setLoading(false)
@@ -48,7 +46,7 @@ function App() {
   return (
     <div className="App">
       {user ? (
-        <ProfilePage user={user} />
+        <ProfilePage user={user} onUserUpdated={(u) => setUser(u)} />
       ) : hash === '#create' ? (
         <CreateUser onUserCreated={(u) => setUser(u)} />
       ) : hash === '#signin' ? (

@@ -9,7 +9,7 @@ export default function HomePage({ onUserCreated } = {}) {
   }
 
   return (
-    <div style={{ maxWidth: 900, margin: '2rem auto', padding: 20 }}>
+    <div style={{ margin: '2rem auto', padding: 20 }}>
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
           <div style={{ width: 196, height: 196, borderRadius: '0%', overflow: 'hidden', background: 'transparent', marginBottom: -10 }}>
