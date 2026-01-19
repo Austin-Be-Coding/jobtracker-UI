@@ -85,6 +85,7 @@ export default function ProfileTab({ user, onUserUpdated, onNavigate } = {}) {
     <section className="profile-section">
       {!editing ? (
         <div className="profile-info">
+          <h2 className='profile-header'>Info</h2>
           <div className="profile-info-row">
             <div className="profile-info-label">First name</div>
             <div className="profile-info-value">{form.firstName}</div>
@@ -128,7 +129,7 @@ export default function ProfileTab({ user, onUserUpdated, onNavigate } = {}) {
 
           <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
             <button onClick={() => setEditing(true)} className="profile-edit-button">Edit info</button>
-            <button onClick={() => (onNavigate ? onNavigate('resume') : (window.location.hash = '#resume'))} className="btn">Auto-fill with resume</button>
+            <button onClick={() => (onNavigate ? onNavigate('resume') : (window.location.hash = '#resume'))} style={{color: 'white'}} className="btn btn-secondary">Auto-fill with resume</button>
           </div>
         </div>
       ) : (

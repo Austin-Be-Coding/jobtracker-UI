@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import '../styles/main.css'
 import ResumePage from './ResumePage'
+import JobPage from '../Job/JobPage'
 import ProfileTab from './ProfileTab'
 
 export default function ProfilePage({ user, onUserUpdated } = {}) {
@@ -13,8 +14,8 @@ export default function ProfilePage({ user, onUserUpdated } = {}) {
       <main style={{ flex: 1, display: 'grid', gridTemplateColumns: '220px 1fr 260px', gap: 24, alignItems: 'start', width: '100%' }}>
         <aside style={{ width: 220, display: 'flex', flexDirection: 'column', alignItems: 'stretch', paddingTop: 8 }}>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'stretch' }}>
-            {['profile','resume','dream','search','applications'].map((t) => {
-              const labels = { profile: 'Profile', resume: 'Resume', dream: 'Dream Job', search: 'Job Search', applications: 'Applications' }
+            {['profile','resume','dream','jobs','applications'].map((t) => {
+              const labels = { profile: 'Profile', resume: 'Resume', dream: 'Dream Job', jobs: 'Jobs', applications: 'Applications' }
               const label = labels[t] || t
               return (
                 <button
@@ -51,6 +52,9 @@ export default function ProfilePage({ user, onUserUpdated } = {}) {
               <h2 className="gradient-heading">Dream Job</h2>
               <p style={{ color: '#444' }}>Describe your ideal role and companies.</p>
             </section>
+          )}
+          {tab === 'jobs' && (
+            <JobPage />
           )}
           {tab === 'search' && (
             <section>

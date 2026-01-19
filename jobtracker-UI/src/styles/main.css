@@ -152,8 +152,8 @@
 }
 
 /* Profile info styles */
-.profile-section{ padding: 12px; text-align: left; margin-top: 20px; }
-.profile-header{ display:flex; gap:24px; align-items:flex-start; margin-bottom:12px }
+.profile-section{ padding: 12px; text-align: left; margin-top: 100px; }
+.profile-header{ display:flex; font-size: 34px; color: var(--gold-1); gap:24px; align-items:flex-start; margin-bottom:12px }
 .avatar-large{ width:96px; height:96px; border-radius:12px; background-size:cover; background-position:center; border:1px solid rgba(0,0,0,0.06); display:flex; align-items:flex-start; justify-content:flex-start }
 .profile-name{ font-size:34px; font-weight:700 }
 .profile-sub{ color:#ffffff }
@@ -168,3 +168,16 @@
 .profile-form{ display:grid; gap:12px; max-width:720px }
 .profile-form .input-field, .profile-form input{ padding:8px 10px; border:1px solid rgba(0,0,0,0.12); border-radius:6px }
 .profile-actions{ display:flex; gap:8px }
+
+/* Job list / card styles */
+.job-card{
+  padding: 16px 18px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  color: #eef;
+}
+.job-card div { color: inherit }
+.job-card .company { color: #ccc }
+
