@@ -41,10 +41,10 @@ function App() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
-  if (loading) return <div className="App">Loading…</div>
+  if (loading) return <div className="app-container loading-screen">Loading…</div>
 
   return (
-    <div className="App">
+    <div className="app-container">
       {user ? (
         <ProfilePage user={user} onUserUpdated={(u) => setUser(u)} />
       ) : hash === '#create' ? (

@@ -1,5 +1,5 @@
 // API client for resume upload and AI analysis
-let API_BASE = 'http://localhost:8080'
+let API_BASE = '/api'
 
 export function setApiBase(url) {
   API_BASE = url.replace(/\/$/, '')
@@ -73,9 +73,36 @@ export async function getUserResumes(userId) {
   return handleResponse(res)
 }
 
+// Attempt to fetch the raw resume file as a Blob from common endpoints.
+export async function fetchResumeBlob(resumeId) {
+  if (!resumeId) throw new Error('Missing resumeId')
+  const id = encodeURIComponent(resumeId)
+  const candidates = [
+    `/resumes/download/${id}`,
+    `/resumes/${id}`,
+    `/resumes/file/${id}`,
+    `/resumes/${id}/download`,
+    `/resumes/download?resumeId=${id}`,
+  ]
+
+  for (const path of candidates) {
+    try {
+      const url = `${API_BASE}${path}`
+      const res = await fetch(url, buildOptions('GET', null, { credentials: 'include' }))
+      if (res.ok) {
+        return await res.blob()
+      }
+    } catch (e) {
+      // try next candidate
+    }
+  }
+  throw new Error('Could not fetch resume file from server')
+}
+
 export default {
   setApiBase,
   uploadResume,
   analyzeResume,
   getSuggestions,
+  fetchResumeBlob,
 }

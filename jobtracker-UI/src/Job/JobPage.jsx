@@ -46,9 +46,9 @@ export default function JobPage() {
   if (error) return <div style={{ color: 'salmon' }}>Error: {error}</div>
 
   return (
-    <section>
+    <section style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <h2 className="gradient-heading">Jobs</h2>
-      <div style={{ display: 'grid', gap: 12, marginTop: 12 }}>
+      <div className="job-list-scroll" style={{ display: 'grid', gap: 12, marginTop: 12, overflowY: 'scroll', maxHeight: 900 }}>
         {jobs.length === 0 && <div style={{ color: '#888' }}>No jobs found.</div>}
         {jobs.map((j) => <JobCard key={j.id || j.jobId || j.title} job={j} />)}
       </div>

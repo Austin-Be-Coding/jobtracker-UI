@@ -10,8 +10,8 @@ export default function ProfilePage({ user, onUserUpdated } = {}) {
   const avatar = user?.profilePictureURL || ''
 
   return (
-    <div style={{ minHeight: '100vh', width: '100%', display: 'flex', flexDirection: 'column', padding: '24px 0', boxSizing: 'border-box' }}>
-      <main style={{ flex: 1, display: 'grid', gridTemplateColumns: '220px 1fr 260px', gap: 24, alignItems: 'start', width: '100%' }}>
+    <div style={{ width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', padding: 0, boxSizing: 'border-box' }}>
+      <main style={{ flex: 1, display: 'grid', gridTemplateColumns: '220px 1fr 260px', gap: 24, alignItems: 'stretch', width: '100%', height: '100%', gridAutoRows: 'minmax(0, 1fr)' }}>
         <aside style={{ width: 220, display: 'flex', flexDirection: 'column', alignItems: 'stretch', paddingTop: 8 }}>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'stretch' }}>
             {['profile','resume','dream','jobs','applications'].map((t) => {
@@ -40,7 +40,7 @@ export default function ProfilePage({ user, onUserUpdated } = {}) {
           </nav>
         </aside>
 
-        <div style={{ width: '100%', maxWidth: 980, height: '100%', margin: '0 auto' }}>
+        <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
           {tab === 'profile' && (
             <ProfileTab user={user} onUserUpdated={onUserUpdated} onNavigate={(t) => setTab(t)} />
           )}
@@ -70,7 +70,7 @@ export default function ProfilePage({ user, onUserUpdated } = {}) {
           )}
         </div>
 
-        <aside style={{ width: 260, padding: 12, borderLeft: '1px solid rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
+        <aside style={{ minWidth: 260, padding: 12, borderLeft: '1px solid rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center', boxSizing: 'border-box' }}>
           <div className="avatar-upload" style={{ width: 96, height: 96, borderRadius: 12, backgroundImage: avatar ? `url(${avatar})` : 'none' }}>
             {!avatar && <span style={{ fontSize: 36, color: '#666' }}>{firstName ? firstName[0].toUpperCase() : '?'}</span>}
           </div>

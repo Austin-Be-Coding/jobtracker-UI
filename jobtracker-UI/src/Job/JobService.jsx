@@ -1,4 +1,4 @@
-const API_BASE_DEFAULT = 'http://localhost:8080'
+const API_BASE_DEFAULT = '/api'
 let API_BASE = API_BASE_DEFAULT
 
 export function setApiBase(url) {

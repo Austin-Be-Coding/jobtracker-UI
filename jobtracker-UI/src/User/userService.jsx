@@ -1,5 +1,5 @@
 // Lightweight REST helpers for /api/users
-let API_BASE = 'http://localhost:8080'
+let API_BASE = '/api'
 let authToken = null
 // Default static basic auth credentials for now
 
