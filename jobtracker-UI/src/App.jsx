@@ -46,7 +46,20 @@ function App() {
   return (
     <div className="app-container">
       {user ? (
-        <ProfilePage user={user} onUserUpdated={(u) => setUser(u)} />
+        <ProfilePage
+          user={user}
+          onUserUpdated={(u) => setUser(u)}
+          onLogout={async () => {
+            try {
+              await userService.logout()
+            } catch (e) {
+              console.warn('Logout failed:', e)
+            } finally {
+              setUser(null)
+              window.location.hash = '#signin'
+            }
+          }}
+        />
       ) : hash === '#create' ? (
         <CreateUser onUserCreated={(u) => setUser(u)} />
       ) : hash === '#signin' ? (

@@ -52,6 +52,35 @@
 .choose-file-btn:active{ transform: translateY(0); }
 .choose-file-btn:focus{ outline: 3px solid rgba(255,184,64,0.18); }
 
+/* small variant for compact upload under avatar */
+.choose-file-btn.small{
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  gap: 6px;
+}
+
+/* Add vertical spacing between inputs/textarea inside resume-like/profile panels */
+.resume-like-panel .input-field,
+.resume-like-panel .auto-textarea,
+.resume-like-panel .choose-file-btn{
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* small eye toggle for salary reveal */
+.eye-btn{
+  background: transparent;
+  border: none;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(0,0,0,0.6);
+}
+.light-mode .eye-btn{ color: rgba(0,0,0,0.7) }
+
 /* Helper for gradient text headings */
 .gradient-heading{
   background: linear-gradient(to right, var(--gold-1) 0%, var(--gold-2) 100%);
@@ -81,6 +110,121 @@
   box-shadow: 0 1px 6px rgba(0,0,0,0.12);
 }
 
+/* Avatar wrapper to show a hover menu */
+.profile-avatar-wrap{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profile-avatar-wrap .avatar-upload{ cursor: pointer }
+.profile-menu{
+  /* place the menu directly under the avatar as a normal flow element */
+  position: static;
+  display: block; /* always visible */
+  margin-top: 10px;
+  background: #1f1f1f; /* dark menu by default */
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0);
+  min-width: 180px;
+  z-index: 60;
+}
+.profile-menu .btn{ display: block; width: 100%; text-align: left; padding: 8px 10px; background: transparent; border: none; color: inherit }
+
+/* Right-side sliding profile drawer and overlay */
+.profile-drawer-overlay{
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0,0,0,0.36);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 80;
+}
+.profile-drawer-overlay.open{ opacity: 1; pointer-events: auto }
+
+.profile-drawer{
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 320px;
+  max-width: 92vw;
+  background: #111;
+  color: #fff;
+  transform: translateX(100%);
+  transition: transform 320ms cubic-bezier(.2,.9,.2,1);
+  z-index: 90;
+  padding: 20px;
+  box-shadow: -12px 0 30px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+}
+.profile-drawer.open{ transform: translateX(0) }
+.profile-drawer .btn{ text-align: left; background: transparent; border: 1px solid rgba(255,255,255,0.04); color: inherit }
+
+/* Light mode override for drawer */
+.light-mode .profile-drawer{ background: #ffffff; color: #111 }
+
+
+@media (prefers-color-scheme: dark) {
+  .profile-menu{ background: #1f1f1f; color: #fff; border: 1px solid rgba(255,255,255,0.04) }
+}
+
+/* Light theme overrides when `.light-mode` is placed on the <html> element */
+.light-mode, .light-mode body, .light-mode #root {
+  background-color: #ffffff !important;
+  color: #111111 !important;
+}
+.light-mode button {
+  background-color: #ffffff !important;
+  color: #111111 !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+.light-mode .suggestion-card, .light-mode .suggestion-card--large {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04) !important;
+}
+.light-mode .suggestion-content, .light-mode .markdown-content {
+  color: #111111 !important;
+  background: transparent !important;
+}
+.light-mode .markdown-content h1, .light-mode .markdown-content h2, .light-mode .markdown-content h3 { color: #333333 !important }
+.light-mode .job-card {
+  background: #fafafa !important;
+  color: #111111 !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+}
+.light-mode .avatar-upload{ background-color: #f3f3f3 !important }
+.light-mode .profile-menu{ background: #ffffff !important; color: #222 !important; border: 1px solid rgba(0,0,0,0.06) }
+
+/* Fix remaining components that explicitly set white text by forcing dark text in light-mode */
+.light-mode .suggestion-card,
+.light-mode .suggestion-card *,
+.light-mode .suggestion-content,
+.light-mode .suggestion-card--large .suggestion-content > div,
+.light-mode .markdown-content,
+.light-mode .markdown-content p,
+.light-mode .markdown-content h1,
+.light-mode .markdown-content h2,
+.light-mode .markdown-content h3,
+.light-mode .profile-sub,
+.light-mode .profile-name,
+.light-mode .profile-info-value,
+.light-mode .profile-info-label {
+  color: #111111 !important;
+}
+
+.light-mode .cta-button { color: #fff !important; }
+.light-mode button, .light-mode .btn { color: #111111 !important; }
+.light-mode .job-card { background: #fff !important; }
+.light-mode .job-card .company { color: #444 !important; }
+
+
 .error{ color: red; }
 
 .form-container{ width: 100%; display: grid; gap: 8px; margin-top: 0; }
@@ -92,14 +236,156 @@
   border: 1px solid rgba(0,0,0,0.12);
   border-radius: 6px;
   outline: none;
+  font-size: 15px;
+  line-height: 1.3;
 }
+
+.date-input{ width: 180px }
+
+/* stylized month picker: add calendar indicator and padding */
+.date-input{
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='4' width='18' height='18' rx='2'/><line x1='16' y1='2' x2='16' y2='6'/><line x1='8' y1='2' x2='8' y2='6'/><line x1='3' y1='10' x2='21' y2='10'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 36px;
+}
+
+/* Month picker popover */
+.month-popover{
+  position: absolute;
+  z-index: 120;
+  top: calc(100% + 8px);
+  left: 0;
+  background: #fff;
+  color: #111;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  padding: 12px;
+  border-radius: 8px;
+  min-width: 220px;
+}
+.month-year-row{ display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:8px }
+.month-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:6px }
+.month-cell{ padding:8px 6px; border-radius:6px; border:1px solid rgba(0,0,0,0.06); background:transparent; cursor:pointer }
+.month-cell:hover{ background: rgba(0,0,0,0.04) }
+.month-cell.selected{ background: linear-gradient(90deg,var(--gold-1),var(--gold-2)); color: #fff; border-color: transparent }
+
+.month-picker .input-field{ cursor: pointer }
+.month-picker .btn{ padding:6px 8px; border-radius:6px }
+.month-picker .btn-secondary{ background: transparent }
+
+/* Dark mode adjustments for MonthPicker */
+@media (prefers-color-scheme: dark) {
+  .month-popover{
+    background: #111;
+    color: #eee;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+  .month-cell{ border-color: rgba(255,255,255,0.04); color: #e8e8e8 }
+  .month-cell:hover{ background: rgba(255,255,255,0.03) }
+  .month-cell.selected{ background: linear-gradient(90deg,var(--gold-1),var(--gold-2)); color: #121212 }
+  .month-picker .input-field{ background: #0f0f0f; color: #e8e8e8; border: 1px solid rgba(255,255,255,0.04) }
+  .month-picker .btn{ background: rgba(255,255,255,0.03); color: #eee }
+}
+
+/* Light-mode explicit overrides when `.light-mode` present */
+.light-mode .month-popover{
+  background: #fff;
+  color: #111;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.light-mode .month-cell{ border-color: rgba(0,0,0,0.06); color: #111 }
+.light-mode .month-cell:hover{ background: rgba(0,0,0,0.03) }
+.light-mode .month-picker .input-field{ background: #fff; color: #111; border: 1px solid rgba(0,0,0,0.06) }
 
 .input-field:focus{ box-shadow: 0 0 0 3px rgba(255,184,64,0.12); border-color: var(--gold-2); }
 
+/* Error state for inputs */
+.input-field.error{ border-color: crimson; box-shadow: 0 0 0 4px rgba(255,0,0,0.06); }
+.date-input.error{ border-color: crimson; box-shadow: 0 0 0 4px rgba(255,0,0,0.06); }
+
 .form-actions{ display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
 
-.btn{ padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.06); background: #fff; cursor: pointer; }
-.btn-secondary{ background: transparent; color: #333; }
+.btn{ padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: #fff; cursor: pointer; transition: transform 120ms ease, background-color 120ms ease; }
+.btn:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.04); }
+.btn:focus{ outline: 3px solid rgba(255,184,64,0.12); }
+.btn-secondary{ background: transparent; color: #ddd; border-color: rgba(255,255,255,0.04); }
+
+/* Resume page tabs */
+.resume-tabs{ display:flex; gap:8px; margin-left: 12px; align-items: center }
+.resume-tab{ padding:8px 12px; border-radius:8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.04); color: inherit; cursor:pointer }
+.resume-tab.active{ background: linear-gradient(90deg,var(--gold-1),var(--gold-2)); color: #121212; font-weight:700; border-color: rgba(0,0,0,0.06) }
+
+@media (prefers-color-scheme: light) {
+  .resume-tab{ background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.06) }
+  .resume-tab.active{ color: #fff }
+}
+
+/* Scrollable resume preview/text/json panel */
+.resume-panel{
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 12px;
+  border-radius: 8px;
+  text-align: left;
+  min-height: 240px;
+  /* allow the panel to grow up to a viewport fraction, then scroll as a whole */
+  max-height: calc(70vh);
+  overflow: auto; /* make the entire panel scroll when content exceeds max-height */
+  background: rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-form{ display: block; }
+.resume-form .input-field{ width: 100%; box-sizing: border-box; margin-top: 6px }
+.resume-form strong{ display:block; margin-bottom:6px }
+
+/* Profile / resume-like panel used for ProfileTab */
+.resume-like-panel{
+  width: 100%;
+  max-width: 920px; /* mix width: allow wide on desktop, constrained on large screens */
+  margin: 0 auto;
+  padding: 14px;
+  box-sizing: border-box;
+}
+.resume-like-panel .avatar-large{ width:72px; height:72px; border-radius:8px; background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center }
+
+/* Profile-specific action button styles to match resume CTA while keeping neutral secondary buttons */
+.resume-like-panel .cta-button{ padding: 10px 14px; font-weight:700 }
+.resume-like-panel .btn{ padding: 8px 12px; border-radius:6px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); color: #fff; cursor: pointer }
+.resume-like-panel .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.04) }
+.profile-actions .btn{ border-color: rgba(0,0,0,0.06); }
+
+/* Light mode overrides for profile buttons */
+.light-mode .resume-like-panel .btn{ border-color: rgba(0,0,0,0.08); background: #fff; color: #111 }
+/* Light-mode overrides for generic buttons */
+.light-mode .btn{ background: #fff; color: #111; border-color: rgba(0,0,0,0.06) }
+.light-mode .btn-secondary{ color: #333; border-color: rgba(0,0,0,0.04) }
+.light-mode .resume-like-panel .cta-button{ color: #fff }
+
+/* Make inner preview/text/json panes flex and scroll when content overflows */
+.resume-panel > div, .resume-panel > pre {
+  /* do not force children to scroll themselves; allow them to size naturally */
+  flex: 0 0 auto;
+  overflow: visible;
+  min-height: 0;
+}
+
+/* Auto-resizing textarea used across resume form */
+.auto-textarea {
+  resize: none; /* user cannot manually resize */
+  overflow: hidden; /* hide internal scrollbars; we'll size to content */
+  min-height: 48px;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+.resume-pre{ white-space: pre-wrap; }
+
+@media (max-width: 640px) {
+  .resume-panel{ max-height: calc(50vh); }
+  .resume-pre{ max-height: calc(50vh - 40px) }
+}
 
 /* reuse existing .cta-button for save primary action */
 
@@ -178,7 +464,7 @@
 }
 
 /* Profile info styles */
-.profile-section{ padding: 12px; text-align: left; margin-top: 100px; }
+.profile-section{ padding: 12px; text-align: left; margin-top: 12px; }
 .profile-header{ display:flex; font-size: 34px; color: var(--gold-1); gap:24px; align-items:flex-start; margin-bottom:12px }
 .avatar-large{ width:96px; height:96px; border-radius:12px; background-size:cover; background-position:center; border:1px solid rgba(0,0,0,0.06); display:flex; align-items:flex-start; justify-content:flex-start }
 .profile-name{ font-size:34px; font-weight:700 }

@@ -123,7 +123,39 @@ export async function getCurrentUser() {
   if (!res.ok) throw new Error('Failed to fetch current user')
   const data = await handleResponse(res)
   // Backend may return { user: { ... }, status: 'authenticated' } — unwrap for callers
-  if (data && typeof data === 'object' && data.user) return data.user
+  // Defensive check: if the response could not be parsed as JSON, handleResponse
+  // returns the raw text. Attempt a best-effort repair for a few common malformations
+  // (trailing commas, dangling keys with no value) so the UI can recover while
+  // the backend is fixed. If repair fails, throw with a useful preview.
+  if (!data || typeof data !== 'object') {
+    if (typeof data === 'string') {
+      let text = data.trim()
+      console.debug('[userService] getCurrentUser: raw response preview:', text.slice(0, 400))
+      try {
+        // remove low-control chars
+        text = text.replace(/[\u0000-\u0019]+/g, '')
+        // remove trailing commas before closing object/array
+        text = text.replace(/,\s*([}\]])/g, '$1')
+        // replace dangling keys like ,"interestedCompanies"  => ,"interestedCompanies":null
+        text = text.replace(/,\s*"([a-zA-Z0-9_]+)"(?=\s*[}\]])/g, ',"$1":null')
+        const parsed = JSON.parse(text)
+        if (parsed && typeof parsed === 'object') {
+          console.debug('[userService] getCurrentUser: repair succeeded; parsed preview:', JSON.stringify(parsed).slice(0,400))
+          data = parsed
+        } else {
+          console.debug('[userService] getCurrentUser: repair produced non-object result')
+        }
+      } catch (e) {
+        console.debug('[userService] getCurrentUser: repair failed', e?.message)
+        // fall through to throw below with preview
+      }
+    }
+    if (!data || typeof data !== 'object') {
+      const preview = typeof data === 'string' ? data.slice(0, 400) : JSON.stringify(data)
+      throw new Error(`Invalid user data received from server: ${preview}`)
+    }
+  }
+  if (data.user && typeof data.user === 'object') return data.user
   return data
 }
 

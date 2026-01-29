@@ -168,12 +168,22 @@ export default function ResumePage({ user } = {}) {
       const normalized = normalizeFilename(resumeFileName)
       const title = normalized || 'edited_resume'
 
-      // Build content
-      const parts = (suggestions || []).map((s, i) => {
-        const raw = extractContent(s)
-        const safe = sanitizeSuggestionHtml(raw)
-        return `<section class="suggestion-block" data-suggestion-index="${i}">${safe}</section>`
-      })
+      // Prefer exporting a single annotated resume HTML if present.
+      let sourceHtml = ''
+      try {
+        const resumeCandidate = (suggestions || []).find((s) => s.isResume || (s.title && /resume/i.test(s.title))) || (suggestions || [])[0]
+        if (resumeCandidate) sourceHtml = extractContent(resumeCandidate)
+      } catch (e) {
+        sourceHtml = ''
+      }
+
+      // Fallback: concatenate suggestions
+      if (!sourceHtml || String(sourceHtml).trim().length === 0) {
+        sourceHtml = (suggestions || []).map((s) => extractContent(s)).join('\n<hr/>\n')
+      }
+
+      const safe = sanitizeSuggestionHtml(sourceHtml)
+      const flattened = flattenForPdf(safe)
 
       const wrapper = document.createElement('div')
       // keep element in DOM and renderable by html2canvas but keep it off-screen
@@ -185,7 +195,17 @@ export default function ResumePage({ user } = {}) {
       wrapper.style.opacity = '1'
       wrapper.style.zIndex = '9999'
       wrapper.style.background = '#fff'
-      wrapper.innerHTML = `<div style="font-family:system-ui,Arial,Helvetica,sans-serif;color:#222;padding:24px"><h1>${escapeHtml(title)}</h1>${parts.join('\n')}</div>`
+      wrapper.innerHTML = `
+        <div style="font-family:Arial,Helvetica,sans-serif;color:#111;padding:24px">
+          <style>
+            h2 { margin-top: 14px; }
+            ul, li, p { page-break-inside: avoid; }
+            hr { margin: 12px 0; }
+            .section { page-break-inside: avoid; }
+          </style>
+          <h1>${escapeHtml(title)}</h1>
+          ${flattened}
+        </div>`
       document.body.appendChild(wrapper)
 
       // defensive: ensure we actually have content
@@ -413,6 +433,37 @@ export default function ResumePage({ user } = {}) {
         ALLOWED_TAGS: ['div','span','p','h1','h2','h3','ul','ol','li','hr','br','strong','em','b','i','button'],
         ALLOWED_ATTR: ['class','style','data-change-id','data-action','type']
       })
+    }
+
+    // Flatten interactive markup for PDF export: remove controls, suggestions, and unwrap change wrappers
+    function flattenForPdf(html) {
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(html || '', 'text/html')
+
+      // Remove control containers/buttons
+      doc.querySelectorAll('.controls').forEach((n) => n.remove())
+
+      // Remove suggestion replacement blocks
+      doc.querySelectorAll('.suggest').forEach((n) => n.remove())
+
+      // Unwrap change wrappers but keep their content
+      doc.querySelectorAll('.change').forEach((wrap) => {
+        const parent = wrap.parentNode
+        if (!parent) return
+        while (wrap.firstChild) parent.insertBefore(wrap.firstChild, wrap)
+        parent.removeChild(wrap)
+      })
+
+      // Clean up original spans which may have inline highlight styling
+      doc.querySelectorAll('.orig').forEach((orig) => {
+        orig.style.background = 'transparent'
+        orig.style.color = ''
+        orig.style.padding = ''
+        orig.style.borderRadius = ''
+        orig.classList.remove('orig')
+      })
+
+      return doc.body.innerHTML
     }
 
   return (
